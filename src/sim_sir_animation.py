@@ -103,7 +103,7 @@ def main() -> None:
     # R0 > 1: outbreak will occur
     # R0 < 1: outbreak will die out
     r0 = config.get_r0()
-    print(f"Running simulation with β={beta}, γ={gamma}, R₀={r0:.2f}")
+    print(f"Running simulation with beta={beta}, gamma={gamma}, R0={r0:.2f}")
     
     # Run the simulation
     t, S, I, R = simulate_sir(S0, I0, R0, beta, gamma, dt, steps)
@@ -115,7 +115,7 @@ def main() -> None:
     make_animation(
         t, S, I, R,
         save_path=config.OUTPUT_FILE,
-        title_suffix=f"\nβ={beta}, γ={gamma}, R₀={r0:.1f}"
+        title_suffix=f"\nbeta={beta}, gamma={gamma}, R0={r0:.1f}"
     )
     print(f"✓ Saved {config.OUTPUT_FILE}")
 
