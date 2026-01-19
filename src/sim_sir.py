@@ -1,11 +1,16 @@
+"""
+SIR (Susceptible-Infected-Recovered) model implementation.
+
+This module provides functions to simulate disease/trend spread using the SIR model.
+"""
+
+from typing import Tuple
 import numpy as np
-
-# Calculate derivatives for the SIR model
-import numpy as np
-
+import numpy.typing as npt
+import config
 
 
-def sir_derivatives(S, I, R, beta, gamma):
+def sir_derivatives(S: float, I: float, R: float, beta: float, gamma: float) -> Tuple[float, float, float]:
     """
     Calculate the rate of change for each compartment in the SIR model.
     
@@ -37,7 +42,15 @@ def sir_derivatives(S, I, R, beta, gamma):
     
     return dS, dI, dR
 
-def simulate_sir(S0, I0, R0, beta, gamma, dt, steps):
+def simulate_sir(
+    S0: float,
+    I0: float,
+    R0: float,
+    beta: float,
+    gamma: float,
+    dt: float,
+    steps: int,
+) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:
     """
     Simulate the SIR model over time using Euler's numerical method.
     
@@ -81,26 +94,17 @@ def simulate_sir(S0, I0, R0, beta, gamma, dt, steps):
         R[k + 1] = max(R[k + 1], 0.0)
 
     return t, S, I, R
-
-if __name__ == "__main__":
-    # ========== SIMULATION PARAMETERS ==========
-    # Initial population distribution
-    S0, I0, R0 = 990, 10, 0  # Start with 990 susceptible, 10 infected, 0 recovered
-    
-    # Model parameters
-    beta = 0.08   # Transmission rate
-    gamma = 0.10  # Recovery rate
-    # R0 = beta/gamma = 0.8 (trend will die out since R0 < 1)
-    
-    # Numerical simulation settings
-    dt = 0.1      # Time step (smaller = more accurate but slower)
-    steps = 600   # Number of steps (total time = 600 * 0.1 = 60 time units)
-
-    # Run the simulation
-    t, S, I, R = simulate_sir(S0, I0, R0, beta, gamma, dt, steps)
+def main() -> None:
+    """Run the SIR simulation with default parameters."""
+    # Run the simulation using parameters from config.py
+    t, S, I, R = simulate_sir(config.S0, config.I0, config.R0, config.BETA, config.GAMMA, config.DT, config.STEPS)
 
     # Verify conservation of population (important validation check)
     # The total N = S + I + R should remain constant throughout
     total = S + I + R
     print("Total population (min/max):", total.min(), total.max())
-    print("Expected:", S0 + I0 + R0)
+    print("Expected:", config.S0 + config.I0 + config.R0)
+
+
+if __name__ == "__main__":
+    main()

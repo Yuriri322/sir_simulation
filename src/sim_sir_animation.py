@@ -1,11 +1,26 @@
+"""
+Animated visualization of the SIR simulation.
+
+This module creates GIF animations showing how SIR populations evolve over time.
+"""
+
+from typing import Tuple
 import numpy as np
+import numpy.typing as npt
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from sim_sir import simulate_sir  
+from sim_sir import simulate_sir
+import config
 
-# Create an animated visualization of the SIR simulation
 
-def make_animation(t, S, I, R, save_path="sir.gif", title_suffix=""):
+def make_animation(
+    t: npt.NDArray,
+    S: npt.NDArray,
+    I: npt.NDArray,
+    R: npt.NDArray,
+    save_path: str = "sir.gif",
+    title_suffix: str = "",
+) -> None:
     """
     Create an animated GIF showing how the SIR populations evolve over time.
     The animation draws the curves progressively to show the dynamics clearly.
@@ -70,23 +85,25 @@ def make_animation(t, S, I, R, save_path="sir.gif", title_suffix=""):
     anim.save(save_path, writer="pillow", fps=20)
     plt.close(fig)
 
-if __name__ == "__main__":
+def main() -> None:
+    """Create and save SIR simulation animation."""
     # ========== CONFIGURATION ==========
     # Initial conditions
-    S0, I0, R0 = 990, 10, 0  # 990 susceptible, 10 initially spreading
+    S0, I0, R0 = config.S0, config.I0, config.R0
     
     # Model parameters (modify these to see different behaviors)
-    beta = 0.30   # Transmission rate (higher = spreads faster)
-    gamma = 0.10  # Recovery rate (higher = shorter infection period)
+    beta = config.BETA
+    gamma = config.GAMMA
     
     # Simulation settings
-    dt = 0.1      # Time step
-    steps = 600   # Number of steps (total time = 60 units)
+    dt = config.DT
+    steps = config.STEPS
 
     # Calculate R0 (basic reproduction number)
     # R0 > 1: outbreak will occur
     # R0 < 1: outbreak will die out
-    print(f"Running simulation with β={beta}, γ={gamma}, R₀={beta/gamma:.2f}")
+    r0 = config.get_r0()
+    print(f"Running simulation with β={beta}, γ={gamma}, R₀={r0:.2f}")
     
     # Run the simulation
     t, S, I, R = simulate_sir(S0, I0, R0, beta, gamma, dt, steps)
@@ -95,6 +112,13 @@ if __name__ == "__main__":
     print(f"Results: Peak Infected={I.max():.1f}, Final Recovered={R[-1]:.1f}")
     
     # Generate the animated visualization
-    make_animation(t, S, I, R, save_path="sir.gif", 
-                   title_suffix=f"\nβ={beta}, γ={gamma}, R₀={beta/gamma:.1f}")
-    print("✓ Saved sir.gif")
+    make_animation(
+        t, S, I, R,
+        save_path=config.OUTPUT_FILE,
+        title_suffix=f"\nβ={beta}, γ={gamma}, R₀={r0:.1f}"
+    )
+    print(f"✓ Saved {config.OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    main()
