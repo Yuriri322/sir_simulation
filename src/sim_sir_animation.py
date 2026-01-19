@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from sim_sir import simulate_sir  
 
+# Create an animated visualization of the SIR simulation
+
 def make_animation(t, S, I, R, save_path="sir.gif", title_suffix=""):
     """
     Create an animated GIF showing how the SIR populations evolve over time.

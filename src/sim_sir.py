@@ -1,5 +1,10 @@
 import numpy as np
 
+# Calculate derivatives for the SIR model
+import numpy as np
+
+
+
 def sir_derivatives(S, I, R, beta, gamma):
     """
     Calculate the rate of change for each compartment in the SIR model.
