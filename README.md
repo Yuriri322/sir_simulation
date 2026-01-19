@@ -1,14 +1,20 @@
 # SIR Model Simulation
 
+![Python Tests and Linting](https://github.com/Yuriri322/sir_simulation/workflows/Python%20Tests%20and%20Linting/badge.svg)
+
 Python implementation of the SIR (Susceptible-Infected-Recovered) model that simulates how trends or diseases spread through a population.
 
-## Installation
+## Quick Start
+
+### Installation
 
 ```bash
+git clone https://github.com/Yuriri322/sir_simulation.git
+cd sir_simulation
 pip install -r requirements.txt
 ```
 
-## Usage
+### Usage
 
 Generate an animated GIF:
 ```bash
@@ -19,6 +25,26 @@ Run basic simulation:
 ```bash
 python src/sim_sir.py
 ```
+
+### Configuration
+
+Edit `config.py` to customize simulation parameters:
+
+```python
+S0 = 990        # Initial susceptible population
+I0 = 10         # Initial infected population
+BETA = 0.30     # Transmission rate
+GAMMA = 0.10    # Recovery rate
+```
+
+## Features
+
+✅ Configurable SIR model parameters  
+✅ Animated GIF generation  
+✅ Type hints for better code quality  
+✅ Detailed documentation and comments  
+✅ Automatic validation of population conservation  
+✅ GitHub Actions CI/CD pipeline  
 
 ## How It Works
 
@@ -37,13 +63,17 @@ $$\frac{dR}{dt} = \gamma I$$
 
 ## Parameters
 
-Edit these in `src/sim_sir_animation.py`:
+All parameters are managed in `config.py`:
 
-- **beta** (β): Transmission rate (how fast it spreads)
-- **gamma** (γ): Recovery rate (how fast people stop spreading)
+- **S0, I0, R0**: Initial population distribution
+- **BETA (β)**: Transmission rate (how fast it spreads)
+- **GAMMA (γ)**: Recovery rate (how fast people stop spreading)
 - **R₀ = β/γ**: Basic reproduction number
   - R₀ > 1: outbreak spreads
   - R₀ < 1: outbreak dies out
+- **DT**: Time step for simulation
+- **STEPS**: Number of simulation steps
+- **Animation parameters**: Frame rate, output format, etc.
 
 ## Examples
 
